@@ -23,11 +23,35 @@ function getGallery($conn, $type){
     $gallerij = $stmt->get_result();
     ++$test;
     while($row = $gallerij->fetch_assoc()){
-        echo '<a href="test.php?id='.$test.'"><img src="'.$row['locatie'].'"></a>';
+        echo '
+        <div class="lijst">
+            <a class="image" href="test.php?id='.$test.'"><img src="'.$row['locatie'].'"></a>
+            <p>'.$row["naam"].'</p>
+        </div>';
     }
     return $test;
 }
-
+function getPictures($conn, $type){
+    $test = $type;
+    $stmt = $conn->prepare('SELECT * FROM minigallerij WHERE albumLaag = ? AND album = 0');
+    $stmt->bind_param('s', $test);
+    $stmt->execute();
+    $gallerij = $stmt->get_result();
+    ++$test;
+    while($row = $gallerij->fetch_assoc()){
+        echo '
+        <div class="lijst">
+            <img src="'.$row['locatie'].'">
+            <p>'.$row["naam"].'</p>
+        </div>';
+    }
+    echo'
+        <div class="lijst">
+            <button class="button" onclick="openForm()"><img src="./fotos/upload.png"></button>
+            <p>Upload image</p>
+        </div>';
+    return $test;
+}
 ?>  
 
 
